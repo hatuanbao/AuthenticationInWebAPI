@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Auth client</title>
+</head>
+<body>
+
+    <button class="btn-register">register</button>
+    <button class="btn-get-values">get values</button>
+
+
+
+    <script src="Scripts/jquery-1.10.2.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            var api = 'http://localhost:3208/';
+
+            var getValues = function () {
+                var req = $.ajax({
+                    url: api + '/api/values',
+                    method: 'get',
+                    success: function (values) {
+                        console.log('get values success', values);
+                    },
+                    error: function (jqXHR, stt) {
+                        console.log('get values error', jqXHR.statusText || stt);
+                    }
+                });
+
+                return req;
+            }
+
+            $('.btn-get-values').click(getValues);
+
+        });
+    </script>
+</body>
+</html>
