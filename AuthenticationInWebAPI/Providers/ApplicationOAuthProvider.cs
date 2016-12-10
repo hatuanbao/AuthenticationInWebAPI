@@ -29,6 +29,9 @@ namespace AuthenticationInWebAPI.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
+            // without this code, we will get the error: No 'Access-Control-Allow-Origin' header is present on the requested resource. Because we just enabled cors in WebApi, we have to enable cors in this middleware also
+            context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
+
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
             ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);

@@ -14,7 +14,7 @@
     <script>
         $(document).ready(function () {
 
-            var api = 'http://localhost:3208/';
+            var api = 'http://localhost:3208';
 
             var getValues = function () {
                 var req = $.ajax({
@@ -31,7 +31,46 @@
                 return req;
             }
 
-            $('.btn-get-values').click(getValues);
+            $('.btn-get-values').click(() => {
+                // use promise of jquery ajax
+                $.when(login()).then(getValues);
+            });
+
+            var login = function () {
+                var req = $.ajax({
+                    url: api + '/token',
+                    method: 'post',
+                    data: { username: 'hatuanbao.ueh@gmail.com', password: '123456', grant_type: 'password' },
+                    success: function (resp) {
+                        console.log('login success', resp);
+                        sessionStorage.setItem('token', resp.access_token);
+                    },
+                    error: function () {
+                        console.log('login fail');
+                    }
+                });
+                console.log('response of login: ');
+                console.log(req);
+                return req;
+            }
+
+            $('.btn-register').click(function () {
+
+                var api = 'http://localhost:3208';
+
+                $.ajax({
+                    url: api + '/api/account/register',
+                    method: 'post',
+                    data: { email: 'hatuanbao.ueh@gmail.com', password: '123456', confirmPassword: '123456' },
+                    success: function () {
+                        console.log('register success');
+                    },
+                    error: function () {
+                        console.log('register error');
+                    }
+                });
+
+            });
 
         });
     </script>
